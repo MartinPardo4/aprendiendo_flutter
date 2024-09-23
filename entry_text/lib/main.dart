@@ -20,8 +20,10 @@ class MainApp extends StatelessWidget {
               maxLines: null,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.text_fields),
-                label: Text("Ingrese un texto",
-                 style: TextStyle(fontWeight: FontWeight.bold),),
+                label: Text(
+                  "Ingrese un texto",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 border: UnderlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.elliptical(50, 50)),
                 ),
@@ -29,7 +31,10 @@ class MainApp extends StatelessWidget {
                 filled: true,
                 fillColor: Color(0xFFDDDDDD),
               ),
-              style: TextStyle(color: Color(0xAAFF4444), fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  color: Color(0xAAFF4444),
+                  fontWeight: FontWeight.bold,
+              ),
               expands: true,
             ),
           ),
