@@ -78,7 +78,10 @@ class _ExpensesState extends State<Expenses> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Expenses Tracker"),
+        title: const Text(
+          "Expenses Tracker", 
+        ),
+        centerTitle: true,
         actions: [
           IconButton(
             iconSize: 40,
