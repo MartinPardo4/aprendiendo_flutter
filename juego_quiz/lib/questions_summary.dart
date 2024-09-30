@@ -21,22 +21,28 @@ class QuestionsSummary extends StatelessWidget{
                 Stack(
                   alignment: Alignment.center,
                   children: [
-                    Container(
-                      alignment: Alignment.topCenter,
-                      child: Icon(
-                        Icons.circle,
-                        size: 30,
-                        color: e["selected_answer"] == e["correct_answer"] ? Colors.green : Colors.red ,
-                      ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Icon(
+                          Icons.circle,
+                          size: 50,
+                          color: e["selected_answer"] == e["correct_answer"] ? Colors.green : Colors.red,
+                        ),
+                      ],
                     ),
                     Text(
                       ((e["question_index"] as int) + 1).toString(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ) 
                   ],
                 ),
                 Expanded(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         e["question"] as String,

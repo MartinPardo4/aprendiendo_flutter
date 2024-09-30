@@ -42,14 +42,15 @@ class ResultsScreen extends StatelessWidget{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-          Text("You answered $correctAnswers out of $totalQuestions questions correctly!"),
-          const SizedBox(height: 30,),
-          QuestionsSummary(summaryData),
-          const SizedBox(height: 30,),
-          TextButton(
-            onPressed: restartQuiz,
-             child: const Text("Restart Quiz")),
-        ],),
+            Text("You answered $correctAnswers out of $totalQuestions questions correctly!"),
+            const SizedBox(height: 30,),
+            QuestionsSummary(summaryData),
+            const SizedBox(height: 30,),
+            TextButton(
+              onPressed: restartQuiz,
+              child: const Text("Restart Quiz")),
+          ],
+        ),
       ),
     );
     

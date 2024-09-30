@@ -13,7 +13,7 @@ class StartScreen extends StatelessWidget {
       children: [
         Image.asset(
           imagenFlutter,
-          width: 200,
+          width: 300,
           color: const Color.fromARGB(130, 255, 255, 255),
         ),
         const SizedBox(
@@ -21,7 +21,7 @@ class StartScreen extends StatelessWidget {
         ),
         const Text(
           "Learn Flutter the fun way !",
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 21),
         ),
         const SizedBox(
           height: 20,
