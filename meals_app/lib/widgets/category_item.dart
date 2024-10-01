@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:meals_app/models/category.dart';
 
 class CategoryItem extends StatelessWidget {
-  const CategoryItem({super.key, required this.category});
+  const CategoryItem({
+    super.key,
+    required this.category,
+    required this.onTapedCategory,
+  });
 
   final Category category;
+  final void Function() onTapedCategory;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        
-      },
+      onTap: onTapedCategory,
       splashColor: Theme.of(context).primaryColor,
       borderRadius: BorderRadius.circular(16),
       child: Container(
@@ -30,11 +33,10 @@ class CategoryItem extends StatelessWidget {
         child: Text(
           category.title,
           style: Theme.of(context).textTheme.titleLarge!.copyWith(
-            color: Theme.of(context).colorScheme.onSurface,
-          ),
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
         ),
       ),
     );
   }
 }
-
