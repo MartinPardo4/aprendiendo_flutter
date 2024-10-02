@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/providers/favorites_provider.dart';
 
-class MealDescriptionScreen extends StatelessWidget {
+class MealDescriptionScreen extends ConsumerWidget {
   const MealDescriptionScreen({
     super.key,
     required this.meal,
-    required this.onToggledFavorite
   });
 
   final Meal meal;
-  final void Function(Meal meal) onToggledFavorite;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: Text(meal.title),
         actions: [
           IconButton(
-            onPressed: () => onToggledFavorite(meal), 
+            onPressed: () => ref
+                .read(favoritesMealProvider.notifier)
+                .toggleMealFavorite(meal),
             icon: const Icon(Icons.star),
           )
         ],
@@ -44,8 +46,8 @@ class MealDescriptionScreen extends StatelessWidget {
             (ingredient) => Text(
               ingredient,
               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
             ),
           ),
           const SizedBox(
@@ -54,8 +56,8 @@ class MealDescriptionScreen extends StatelessWidget {
           Text(
             "Steps",
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-            ),
+                  color: Theme.of(context).colorScheme.primary,
+                ),
           ),
           const SizedBox(height: 16),
           ...meal.steps.map(
@@ -65,8 +67,8 @@ class MealDescriptionScreen extends StatelessWidget {
                 step,
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: Theme.of(context).colorScheme.onSurface,
-                ),
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
               ),
             ),
           ),
