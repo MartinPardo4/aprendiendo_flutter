@@ -25,7 +25,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
             subtitle: Text("Only include gluten-free meals", style: Theme.of(context).textTheme.labelSmall!.copyWith(
               color: Theme.of(context).colorScheme.onSurface,
             ),),
-            activeColor: ,
+            activeColor: Theme.of(context).colorScheme.tertiary,
           ),
         ],),
     );
