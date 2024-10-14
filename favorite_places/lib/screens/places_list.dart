@@ -47,6 +47,10 @@ class _PlacesListState extends ConsumerState<PlacesList> {
           key: ValueKey(favoritePlaces[index]),
           onDismissed: (direction) => _removeItem,
           child: ListTile(
+            leading: CircleAvatar(
+              radius: 50,
+              backgroundImage: FileImage(favoritePlaces[index].image),
+            ),
             title: Text(
               favoritePlaces[index].name,
               style: Theme.of(context).textTheme.titleMedium!.copyWith(

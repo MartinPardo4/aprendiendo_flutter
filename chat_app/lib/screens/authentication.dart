@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:chat_app/widgets/user_image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -12,10 +16,12 @@ class AuthenticationScreen extends StatefulWidget {
 
 class _AuthenticationScreenState extends State<AuthenticationScreen> {
   var _isLogIn = true;
+  var _isAuthenticaiting = false;
   final _formKey = GlobalKey<FormState>();
 
   var _enteredEmail = "";
   var _enteredPassword = "";
+  File? _selectedImage;
 
   void _submit() async {
     var isValid = _formKey.currentState!.validate();
@@ -24,30 +30,50 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       return;
     }
 
+    /*if(!_isLogIn && _selectedImage == null){
+      return;
+    }*/
+
     _formKey.currentState!.save();
 
     try {
+      setState(() {
+        _isAuthenticaiting = true;
+      });
       if (_isLogIn) {
         final userCredentials = await _firebase.signInWithEmailAndPassword(
-            email: _enteredEmail,
-            password: _enteredPassword,
-          );
-          print(userCredentials);
+          email: _enteredEmail,
+          password: _enteredPassword,
+        );
       } else {
-        
         final userCredentials = await _firebase.createUserWithEmailAndPassword(
           email: _enteredEmail,
           password: _enteredPassword,
         );
         print(userCredentials);
+        /*final storageRef = FirebaseStorage.instance
+            .ref()
+            .child("user_images")
+            .child("${userCredentials.user!.uid}.jpg");
+        
+        await storageRef.putFile(_selectedImage!);
+        final imageUrl = await storageRef.getDownloadURL();
+        
+        print(imageUrl);*/
       }
-    } on FirebaseAuthException catch (error) { 
+    } on FirebaseAuthException catch (error) {
+
+      if(!mounted) return;
+      
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(error.message ?? "Authentication failed"),
         ),
       );
+      setState(() {
+        _isAuthenticaiting = false;
+      });
     }
   }
 
@@ -81,6 +107,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                       key: _formKey,
                       child: Column(
                         children: [
+                          /*if (!_isLogIn)
+                            UserImagePicker(
+                              onSelectImage: (image) {
+                                setState(() {
+                                  _selectedImage = image;
+                                });
+                              },
+                            ),*/
                           TextFormField(
                               keyboardType: TextInputType.emailAddress,
                               autocorrect: false,
@@ -123,25 +157,29 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             },
                           ),
                           const SizedBox(height: 14),
-                          ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Theme.of(context)
-                                    .colorScheme
-                                    .primaryContainer,
-                              ),
-                              onPressed: _submit,
-                              child: Text(_isLogIn ? "Log In" : "Sign Up")),
-                          const SizedBox(height: 6),
-                          TextButton(
-                            onPressed: () {
-                              setState(() {
-                                _isLogIn = !_isLogIn;
-                              });
-                            },
-                            child: Text(_isLogIn
-                                ? "Create an account"
-                                : "I have an account"),
-                          ),
+                          if(_isAuthenticaiting)
+                            const CircularProgressIndicator(),
+                          if(!_isAuthenticaiting)
+                            ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer,
+                                ),
+                                onPressed: _submit,
+                                child: Text(_isLogIn ? "Log In" : "Sign Up")),
+                            const SizedBox(height: 6),
+                          if(!_isAuthenticaiting)
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isLogIn = !_isLogIn;
+                                });
+                              },
+                              child: Text(_isLogIn
+                                  ? "Create an account"
+                                  : "I have an account"),
+                            ),
                         ],
                       ),
                     ),

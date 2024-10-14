@@ -47,7 +47,7 @@ class _NewGroceryState extends State<NewGrocery> {
 
       final Map<String, dynamic> resData = json.decode(response.body);
 
-      if (!context.mounted) {
+      if (!mounted) {
         return;
       }
 
