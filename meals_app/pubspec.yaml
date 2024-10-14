@@ -7,8 +7,11 @@ environment:
   sdk: '>=3.4.4 <4.0.0'
 
 dependencies:
+  bloc: ^8.1.4
+  equatable: ^2.0.5
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.6
   flutter_riverpod: ^2.5.1
   google_fonts: ^6.2.1
   transparent_image: ^2.0.1

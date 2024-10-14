@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals_app/blocs/blocs.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/categories.dart';
 import 'package:meals_app/screens/filters_screen.dart';
 import 'package:meals_app/screens/meals_screen.dart';
 import 'package:meals_app/widgets/main_drawer.dart';
 import 'package:meals_app/providers/favorites_provider.dart';
-import 'package:meals_app/providers/filters_provider.dart';
+//import 'package:meals_app/providers/filters_provider.dart';
 
 
 class TabsScreen extends ConsumerStatefulWidget{
@@ -30,7 +32,15 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     if (identifier == "filters") {
       await Navigator.of(context).push<Map<Filter, bool>>(
         MaterialPageRoute(
-          builder: (ctx) => const FiltersScreen(),
+          builder: (ctx) => 
+          MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (ctx) => FiltersBloc(),
+              ),
+            ],
+            child: const FiltersScreen(),
+          ),
         ),
       );
     }
@@ -39,12 +49,18 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   @override
   Widget build(BuildContext context) {
 
-    final List<Meal> availableMeals = ref.watch(filteredMealsProvider);
+    // final List<Meal> availableMeals = ref.watch(filteredMealsProvider);
     
 
-    Widget currentPage = CategoriesScreen(
-      availableMeals: availableMeals,
-    );
+    Widget currentPage = BlocBuilder<FiltersBloc, FiltersState>(
+      builder: (context, state) {
+      final meals = filteredMeals(state);
+
+      return CategoriesScreen(
+        availableMeals: meals,
+      );
+    }); 
+
     String currentPageTitle = "Categories";
 
     if (_selectedPageIndex == 1) {
