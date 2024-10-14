@@ -30,7 +30,11 @@ class App extends StatelessWidget {
     return MaterialApp(
       theme: theme,
       home: MultiBlocProvider(
-        providers: [BlocProvider(create: (context) => FiltersBloc(),),],
+        providers: [
+          BlocProvider(
+            create: (context) => FiltersBloc(),
+          ),
+        ],
         child: const TabsScreen(),
       ),
       debugShowCheckedModeBanner: false,
