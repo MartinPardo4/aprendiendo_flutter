@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/blocs/blocs.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-//import 'package:meals_app/providers/filters_provider.dart';
 
 class FiltersScreen extends StatelessWidget{
   const FiltersScreen({

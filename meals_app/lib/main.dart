@@ -27,20 +27,20 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: theme,
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => FiltersBloc(),
-          ),
-          BlocProvider(
-            create: (context) => FavoritesBloc(),
-          ),
-        ],
-        child: const TabsScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<FiltersBloc>(
+          create: (context) => FiltersBloc(),
+        ),
+        BlocProvider<FavoritesBloc>(
+          create: (context) => FavoritesBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        theme: theme,
+        home: const TabsScreen(),
+        debugShowCheckedModeBanner: false,
       ),
-      debugShowCheckedModeBanner: false,
     );
   }
 }

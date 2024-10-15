@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/blocs/blocs.dart';
-import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/categories.dart';
 import 'package:meals_app/screens/filters_screen.dart';
 import 'package:meals_app/screens/meals_screen.dart';
 import 'package:meals_app/widgets/main_drawer.dart';
-import 'package:meals_app/providers/favorites_provider.dart';
-//import 'package:meals_app/providers/filters_provider.dart';
 
 
-class TabsScreen extends ConsumerStatefulWidget{
+class TabsScreen extends StatefulWidget{
   const TabsScreen({super.key});
 
   @override
-  ConsumerState<TabsScreen> createState() => _TabsScreenState();
+  State<TabsScreen> createState() => _TabsScreenState();
 }
 
-class _TabsScreenState extends ConsumerState<TabsScreen> {
+class _TabsScreenState extends State<TabsScreen> {
   var _selectedPageIndex = 0;
 
   void _selectPage(int index) {
@@ -33,10 +29,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (ctx) => 
-          BlocProvider.value(
-            value: BlocProvider.of<FiltersBloc>(context),
-            child: const FiltersScreen(),
-          ),  
+          const FiltersScreen(), 
         ),
       );
     }
@@ -65,6 +58,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
       currentPage = BlocBuilder<FavoritesBloc, FavoritesState>(
         builder: (context, state){
           final favoriteMeals = context.read<FavoritesBloc>();
+        
           return MealsScreen(
             meals: favoriteMeals.state.favoriteMeals,
           );
