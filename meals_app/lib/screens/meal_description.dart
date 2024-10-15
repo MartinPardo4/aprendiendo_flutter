@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meals_app/blocs/blocs.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/providers/favorites_provider.dart';
 
@@ -20,21 +22,25 @@ class MealDescriptionScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(meal.title),
         actions: [
-          IconButton(
-            onPressed: () => ref
-                .read(favoriteMealsProvider.notifier)
-                .toggleMealFavorite(meal),
-            icon: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              transitionBuilder: (child, animation) => RotationTransition(
-                turns: Tween(begin: 0.9, end: 1.0).animate(animation),
-                child: child,
-              ),
-              child: Icon(
-                isFavorite ? Icons.star : Icons.star_border,
-                key: ValueKey(isFavorite),
-              ),
-            ),
+          BlocBuilder<FavoritesBloc, FavoritesState>(
+            builder: (context, state) {
+              return IconButton(
+                onPressed: () {
+                  context.read<FavoritesBloc>().add(SetFavoriteEvent(meal));
+                },
+                icon: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  transitionBuilder: (child, animation) => RotationTransition(
+                    turns: Tween(begin: 0.9, end: 1.0).animate(animation),
+                    child: child,
+                  ),
+                  child: Icon(
+                    isFavorite ? Icons.star : Icons.star_border,
+                    key: ValueKey(isFavorite),
+                  ),
+                ),
+              );
+            },
           )
         ],
       ),

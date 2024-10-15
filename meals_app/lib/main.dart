@@ -34,6 +34,9 @@ class App extends StatelessWidget {
           BlocProvider(
             create: (context) => FiltersBloc(),
           ),
+          BlocProvider(
+            create: (context) => FavoritesBloc(),
+          ),
         ],
         child: const TabsScreen(),
       ),

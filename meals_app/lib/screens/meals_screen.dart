@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meals_app/blocs/blocs.dart';
 import 'package:meals_app/models/meal.dart';
 import 'package:meals_app/screens/meal_description.dart';
 import 'package:meals_app/widgets/meal_item.dart';
@@ -17,16 +19,14 @@ class MealsScreen extends StatelessWidget {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (ctx) => MealDescriptionScreen(
-        
-          meal: meal,
-        ),
+        builder: (ctx) => MealDescriptionScreen(meal: meal),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+
     Widget content = Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,

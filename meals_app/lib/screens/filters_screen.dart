@@ -18,13 +18,13 @@ class FiltersScreen extends StatelessWidget{
         title: const Text("Filters"),
       ),
       body: BlocBuilder<FiltersBloc, FiltersState>(
-        builder: (context, state) {
+        builder: (ctx, state) {
           return Column(
             children: [
               SwitchListTile(
                 value: state.filters[Filter.glutenFree]!,
                 onChanged: (onSwitch) {
-                  context.read<FiltersBloc>().add(SetFilterEvent(Filter.glutenFree, onSwitch));
+                  ctx.read<FiltersBloc>().add(SetFilterEvent(Filter.glutenFree, onSwitch));
                 },
                 title: Text(
                   "Gluten-free",

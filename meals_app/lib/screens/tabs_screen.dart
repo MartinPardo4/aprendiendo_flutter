@@ -30,17 +30,13 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   void _setScreen(String identifier) async {
     Navigator.of(context).pop();
     if (identifier == "filters") {
-      await Navigator.of(context).push<Map<Filter, bool>>(
+      await Navigator.of(context).push(
         MaterialPageRoute(
           builder: (ctx) => 
-          MultiBlocProvider(
-            providers: [
-              BlocProvider(
-                create: (ctx) => FiltersBloc(),
-              ),
-            ],
+          BlocProvider.value(
+            value: BlocProvider.of<FiltersBloc>(context),
             child: const FiltersScreen(),
-          ),
+          ),  
         ),
       );
     }
@@ -64,10 +60,15 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     String currentPageTitle = "Categories";
 
     if (_selectedPageIndex == 1) {
-      final favoriteMeals = ref.watch(favoriteMealsProvider);
-
-      currentPage = MealsScreen(
-        meals: favoriteMeals,
+    //  final favoriteMeals = ref.watch(favoriteMealsProvider);
+    
+      currentPage = BlocBuilder<FavoritesBloc, FavoritesState>(
+        builder: (context, state){
+          final favoriteMeals = context.read<FavoritesBloc>();
+          return MealsScreen(
+            meals: favoriteMeals.state.favoriteMeals,
+          );
+        }
       );
       currentPageTitle = "Your Favorites";
     }
