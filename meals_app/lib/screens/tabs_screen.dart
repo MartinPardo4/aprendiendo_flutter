@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meals_app/blocs/blocs.dart';
-import 'package:meals_app/screens/categories.dart';
 import 'package:meals_app/screens/filters_screen.dart';
-import 'package:meals_app/screens/meals_screen.dart';
+import 'package:meals_app/screens/widgets/current_page.dart';
 import 'package:meals_app/widgets/main_drawer.dart';
 
-
-class TabsScreen extends StatefulWidget{
+class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
 
   @override
@@ -18,6 +14,7 @@ class _TabsScreenState extends State<TabsScreen> {
   var _selectedPageIndex = 0;
 
   void _selectPage(int index) {
+    // TODO remove setState
     setState(() {
       _selectedPageIndex = index;
     });
@@ -28,8 +25,7 @@ class _TabsScreenState extends State<TabsScreen> {
     if (identifier == "filters") {
       await Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (ctx) => 
-          const FiltersScreen(), 
+          builder: (ctx) => const FiltersScreen(),
         ),
       );
     }
@@ -37,35 +33,36 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-
+    print('indiceee: $_selectedPageIndex');
+    String currentPageTitle =
+        _selectedPageIndex == 1 ? "Your Favorites" : "Categories";
     // final List<Meal> availableMeals = ref.watch(filteredMealsProvider);
-    
 
-    Widget currentPage = BlocBuilder<FiltersBloc, FiltersState>(
-      builder: (context, state) {
-      final meals = filteredMeals(state);
+    // Moved currentPage to a stless Widget
+    // Widget currentPage =
+    //     BlocBuilder<FiltersBloc, FiltersState>(builder: (context, state) {
+    //   final meals = filteredMeals(state);
 
-      return CategoriesScreen(
-        availableMeals: meals,
-      );
-    }); 
+    //   return CategoriesScreen(
+    //     availableMeals: meals,
+    //   );
+    // });
 
-    String currentPageTitle = "Categories";
+    // String currentPageTitle = "Categories";
 
-    if (_selectedPageIndex == 1) {
-    //  final favoriteMeals = ref.watch(favoriteMealsProvider);
-    
-      currentPage = BlocBuilder<FavoritesBloc, FavoritesState>(
-        builder: (context, state){
-          final favoriteMeals = context.read<FavoritesBloc>();
-        
-          return MealsScreen(
-            meals: favoriteMeals.state.favoriteMeals,
-          );
-        }
-      );
-      currentPageTitle = "Your Favorites";
-    }
+    // if (_selectedPageIndex == 1) {
+    //   //  final favoriteMeals = ref.watch(favoriteMealsProvider);
+
+    //   currentPage =
+    //       BlocBuilder<FavoritesBloc, FavoritesState>(builder: (context, state) {
+    //     final favoriteMeals = context.read<FavoritesBloc>();
+
+    //     return MealsScreen(
+    //       meals: favoriteMeals.state.favoriteMeals,
+    //     );
+    //   });
+    //   currentPageTitle = "Your Favorites";
+    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -74,7 +71,7 @@ class _TabsScreenState extends State<TabsScreen> {
       drawer: MainDrawer(
         onSelectScreen: _setScreen,
       ),
-      body: currentPage,
+      body: CurrentPage(selectedPageIndex: _selectedPageIndex),
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
         currentIndex: _selectedPageIndex,
