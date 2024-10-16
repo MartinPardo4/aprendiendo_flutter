@@ -1,26 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:meals_app/blocs/blocs.dart';
 import 'package:meals_app/screens/filters_screen.dart';
 import 'package:meals_app/screens/widgets/current_page.dart';
 import 'package:meals_app/widgets/main_drawer.dart';
 
-class TabsScreen extends StatefulWidget {
+class TabsScreen extends StatelessWidget {
   const TabsScreen({super.key});
 
-  @override
-  State<TabsScreen> createState() => _TabsScreenState();
-}
-
-class _TabsScreenState extends State<TabsScreen> {
-  var _selectedPageIndex = 0;
-
-  void _selectPage(int index) {
-    // TODO remove setState
-    setState(() {
-      _selectedPageIndex = index;
-    });
-  }
-
-  void _setScreen(String identifier) async {
+  void _setScreen(String identifier, BuildContext context) async {
     Navigator.of(context).pop();
     if (identifier == "filters") {
       await Navigator.of(context).push(
@@ -33,9 +21,8 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('indiceee: $_selectedPageIndex');
-    String currentPageTitle =
-        _selectedPageIndex == 1 ? "Your Favorites" : "Categories";
+
+    
     // final List<Meal> availableMeals = ref.watch(filteredMealsProvider);
 
     // Moved currentPage to a stless Widget
@@ -64,28 +51,44 @@ class _TabsScreenState extends State<TabsScreen> {
     //   currentPageTitle = "Your Favorites";
     // }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(currentPageTitle),
-      ),
-      drawer: MainDrawer(
-        onSelectScreen: _setScreen,
-      ),
-      body: CurrentPage(selectedPageIndex: _selectedPageIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: _selectPage,
-        currentIndex: _selectedPageIndex,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.set_meal),
-            label: "Categories",
+    return BlocBuilder<PageIndexBloc, PageIndexState>(
+      builder: (ctx, state) { 
+
+        var selectedPageIndex = state.pageIndex;
+
+        print('indiceee: $selectedPageIndex');
+        String currentPageTitle =
+      selectedPageIndex == 1 ? "Your Favorites" : "Categories";
+
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(currentPageTitle),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.star),
-            label: "Favorites",
+          drawer: MainDrawer(
+            onSelectScreen: (identifier) {
+              _setScreen(identifier, context);
+            },
           ),
-        ],
-      ),
+          body: CurrentPage(selectedPageIndex: selectedPageIndex),
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: (index){
+              ctx.read<PageIndexBloc>().add(SetPageIndexEvent(index));
+            },
+            currentIndex: selectedPageIndex,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.set_meal),
+                label: "Categories",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.star),
+                label: "Favorites",
+              ),
+            ],
+          ),
+        );
+      }
     );
   }
 }

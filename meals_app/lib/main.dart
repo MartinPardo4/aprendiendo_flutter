@@ -35,6 +35,9 @@ class App extends StatelessWidget {
         BlocProvider<FavoritesBloc>(
           create: (context) => FavoritesBloc(),
         ),
+        BlocProvider(
+          create: (context) => PageIndexBloc(),
+        ),
       ],
       child: MaterialApp(
         theme: theme,
