@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meals_app/blocs/blocs.dart';
@@ -16,9 +15,7 @@ final theme = ThemeData(
 
 void main() {
   runApp(
-    const ProviderScope(
-      child: App(),
-    ),
+    const App(),
   );
 }
 
